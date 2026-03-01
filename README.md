@@ -1,5 +1,5 @@
-Registration no.: 22MIC0132
-Name: Sruti Samantaray
+# Registration no.: 22MIC0132
+# Name: Sruti Samantaray
 
 # Smart Home MQTT Publish–Subscribe System
 
@@ -44,9 +44,9 @@ The system consists of:
 ## Dashboard Components
 
 ### Living Room
-- 🌡 Temperature Gauge
-- 🟢 Device Status (Text Display)
+-  Temperature Gauge
+-  Device Status (Text Display)
 
 ### Bedroom
-- 💡 Light Intensity Line Chart
+-  Light Intensity Line Chart
  
