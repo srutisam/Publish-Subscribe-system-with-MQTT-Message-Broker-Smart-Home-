@@ -1,0 +1,453 @@
+[
+    {
+        "id": "dd256aa94131b6a0",
+        "type": "tab",
+        "label": "Assessment 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "9e95b3798b1836db",
+        "type": "inject",
+        "z": "dd256aa94131b6a0",
+        "name": "Temperature Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "home/livingroom/temperature",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 180,
+        "y": 120,
+        "wires": [
+            [
+                "6e2dc8d20e3dd53f"
+            ]
+        ]
+    },
+    {
+        "id": "6e2dc8d20e3dd53f",
+        "type": "function",
+        "z": "dd256aa94131b6a0",
+        "name": "Generate Random Temp",
+        "func": "msg.payload = {\n    value: Math.floor(Math.random() * 6) + 25,\n    unit: \"C\"\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 120,
+        "wires": [
+            [
+                "66c231f23dcfc50b"
+            ]
+        ]
+    },
+    {
+        "id": "ed0e658beed0471c",
+        "type": "inject",
+        "z": "dd256aa94131b6a0",
+        "name": "Light Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "home/bedroom/light",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 160,
+        "y": 180,
+        "wires": [
+            [
+                "abe3d62493178693"
+            ]
+        ]
+    },
+    {
+        "id": "abe3d62493178693",
+        "type": "function",
+        "z": "dd256aa94131b6a0",
+        "name": "Generate Random Light",
+        "func": "msg.payload = {\n    value: Math.floor(Math.random() * 800) + 200,\n    unit: \"lux\"\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 180,
+        "wires": [
+            [
+                "8533b887cfec70ef"
+            ]
+        ]
+    },
+    {
+        "id": "8533b887cfec70ef",
+        "type": "mqtt out",
+        "z": "dd256aa94131b6a0",
+        "name": "",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "06c7d48cdb219215",
+        "x": 550,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "3c233aff4d068240",
+        "type": "inject",
+        "z": "dd256aa94131b6a0",
+        "name": "Living Room Status",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "home/livingroom/status",
+        "payload": "online",
+        "payloadType": "str",
+        "x": 170,
+        "y": 240,
+        "wires": [
+            [
+                "c44dbffbcd232afa"
+            ]
+        ]
+    },
+    {
+        "id": "64b7b405f3666f2c",
+        "type": "mqtt in",
+        "z": "dd256aa94131b6a0",
+        "name": "Wildcard Subscriber",
+        "topic": "home/#",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "06c7d48cdb219215",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 300,
+        "wires": [
+            [
+                "2c305b5d6ac03d5e",
+                "4645f459fcc26e3f"
+            ]
+        ]
+    },
+    {
+        "id": "c44dbffbcd232afa",
+        "type": "mqtt out",
+        "z": "dd256aa94131b6a0",
+        "name": "",
+        "topic": "",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "06c7d48cdb219215",
+        "x": 330,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "2c305b5d6ac03d5e",
+        "type": "switch",
+        "z": "dd256aa94131b6a0",
+        "name": "",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "home/livingroom/temperature",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "home/bedroom/light",
+                "vt": "str"
+            },
+            {
+                "t": "cont",
+                "v": "status",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 370,
+        "y": 380,
+        "wires": [
+            [
+                "32ef132973bfdd2c"
+            ],
+            [
+                "45ab80128563b111"
+            ],
+            [
+                "d76a9bee3ca2fc87"
+            ]
+        ]
+    },
+    {
+        "id": "32ef132973bfdd2c",
+        "type": "ui_gauge",
+        "z": "dd256aa94131b6a0",
+        "name": "",
+        "group": "46f160f2668ee680",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperature",
+        "label": "°C",
+        "format": "{{msg.payload.value}}",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 590,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "45ab80128563b111",
+        "type": "function",
+        "z": "dd256aa94131b6a0",
+        "name": "Extract Value",
+        "func": "msg.payload = msg.payload.value;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 380,
+        "wires": [
+            [
+                "44cb1817f04b809a"
+            ]
+        ]
+    },
+    {
+        "id": "44cb1817f04b809a",
+        "type": "ui_chart",
+        "z": "dd256aa94131b6a0",
+        "name": "",
+        "group": "8d67bb017a4721af",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "label": "Light Intensity",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "1000",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 780,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d76a9bee3ca2fc87",
+        "type": "ui_text",
+        "z": "dd256aa94131b6a0",
+        "group": "46f160f2668ee680",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Device Status",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 600,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "4645f459fcc26e3f",
+        "type": "debug",
+        "z": "dd256aa94131b6a0",
+        "name": "Debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "66c231f23dcfc50b",
+        "type": "mqtt out",
+        "z": "dd256aa94131b6a0",
+        "name": "",
+        "topic": "",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "06c7d48cdb219215",
+        "x": 590,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "06c7d48cdb219215",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "46f160f2668ee680",
+        "type": "ui_group",
+        "name": "Living Room",
+        "tab": "1b66875a23bf9ee1",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8d67bb017a4721af",
+        "type": "ui_group",
+        "name": "Bedroom",
+        "tab": "1b66875a23bf9ee1",
+        "order": 2,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "1b66875a23bf9ee1",
+        "type": "ui_tab",
+        "name": "Smart Home Dashboard",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "a340b84a65aba430",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]
